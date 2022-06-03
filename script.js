@@ -107,7 +107,10 @@ for(let i=0;i<allCells.length;i++)
 
         //If user input new value in cell then update that value in cellObject alse
         cellObject.value=cellValue;
-        
+        console.log("After update");
+
+        // Update it's children when blur event happens because new value is entered
+        updateChildren(cellObject);
 
     })
 }
