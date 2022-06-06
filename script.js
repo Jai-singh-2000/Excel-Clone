@@ -57,7 +57,8 @@ function databaseInit()
                 name: String.fromCharCode(65+j) + (i+1),
                 value:"",
                 formula:"",
-                children:[]
+                children:[],
+                parent:[]
             }
             row.push(cellObj);
         }
@@ -113,6 +114,27 @@ for(let i=0;i<allCells.length;i++)
         updateChildren(cellObject);
 
     })
+
+    allCells[i].addEventListener("keydown",function(e){
+        if(e.key=='Backspace')
+        {
+            let cell=e.target;
+            let {rowId,colId}=getRowAndColId(e);
+            let cellObject=db[rowId][colId];
+            cellObject.value="";
+            if(cellObject.formula)
+            {
+                cellObject.formula="";
+                formulaBar.value="";
+                cell.textContent="";
+
+                removeFormula(cellObject);
+            }
+        }
+
+    })
+
+
 }
 
 
@@ -122,18 +144,23 @@ formulaBar.addEventListener("blur",function(e){
     if(formula)
     {
         let{rowId,colId}=getRowAndColId(lastSelectedCell);
-        
         //Get cell object of that last selected cell
         let cellObject=db[rowId][colId];
+
+        if(cellObject.formula)//If already formula present means we are changing out formula
+        {
+            removeFormula(cellObject); //Remove all previous child and parent name from curr object to add new parent and child
+        }
         //Passing cell object in which formula is applied for parent children purpose
         let computedValue=solveFormula(formula,cellObject);
         
-        cellObject.value=computedValue;
-        cellObject.formula=formula;
-        // console.log(cellObject);
+        cellObject.value=computedValue; //Update new compute value
+        cellObject.formula=formula;//Update new formula
 
-        lastSelectedCell.target.textContent= computedValue;
+        lastSelectedCell.target.textContent= computedValue; //Change in Ui
         console.log(lastSelectedCell);
+        
+        updateChildren(cellObject);
     }
 })
 

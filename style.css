@@ -1,74 +1,68 @@
+:root{
+    --border-color:rgb(219, 218, 218);
+}
+
+
 *{
     margin: 0%;
     padding: 0%;
+    font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
 }
-
-
-/* Scrollbar design section */
-
-.cell-container::-webkit-scrollbar-track
-{
-	border-radius: 10px;
-	background-color: #F5F5F5;
-}
-
-.cell-container::-webkit-scrollbar
-{
-    height: 12px;
-	width: 12px;
-	background-color: #F5F5F5;
-}
-
-.cell-container::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	background-color: rgb(162, 162, 162);
-}
-
 
 
 /* Top menu style */
 .menu-container{
+    height: 4.5vh;
     width: 100%;
-    height: 4.8vh;
-    background-color:thistle;
+    display: flex;
 }
+
+.excel-icon{
+    /* background-color: crimson; */
+    width: 3.5rem;
+    background-image: url(/FJP6-main/module3/excel/icons8-microsoft-excel-24.png);
+    background-repeat: no-repeat;
+    background-position: center;
+} 
+
+
 
 
 /* Address bar style */
 .address-container{
     width: 100%;
-    height: 4vh;
-    background-color:wheat;
+    height: 3.5vh;
+    display: flex;
 }
 
 
 #address{
-    width: 2.5vw;
+    max-width: 3vw;
     height: 100%;
     text-align: center;
 }
+
+.formula-name{
+    width: 6.9rem;
+    background: url(fx-sign.png);
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #f8f9fa; 
+    border: 0.1px solid rgb(200, 200, 200);
+
+}
+
 
 #formula{
-    width: 10vw;
+    text-align: left;
     height: 100%;
-    text-align: center;
+    flex:1;
+    outline: none;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    border: 0.1px solid rgb(200, 200, 200);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -76,19 +70,18 @@
 
 
 .cell-container{
-    scrollbar-width: thin;          /* "auto" or "thin" */
-  scrollbar-color: blue orange; 
     height: 88vh;
-    background-color: rgb(255, 255, 255);    
+    background-color: #ffffff;  
     overflow-x: scroll;
     overflow-y: scroll;
     position: relative;
     scrollbar-width: thin;
+    font-size: 13px;
 }
 
 /* Inner box  */
 .cell-inner{
-    width: 166vw;
+    min-width: 194vw;
 }
 
 /* Top alphabet div */
@@ -103,8 +96,9 @@
 /* Top left useless cell */
 .alpha-cells:nth-child(1)
 {
+    /* width: 2.5rem; */
     height: 1.5rem; 
-    width: 2.5rem;
+    width: 3rem;
     background-color: rgb(233, 233, 233);
     position: sticky;
     top: 0px;
@@ -114,8 +108,9 @@
 /* Alphabet cells */
 .alpha-cells{
     height: 1.5rem;    
-    width: 6rem;
-    border: 0.1px solid rgb(47, 48, 47);
+    width: 7rem;
+    border-left:  0.1px solid var(--border-color);
+    border-bottom:  0.1px solid var(--border-color);
     display: flex;
 }
 
@@ -125,7 +120,7 @@
     width: 100%;
     text-align: center;
     vertical-align: bottom;
-    background-color: rgb(181, 179, 179);
+    background-color: #f8f9fa;
 }
 
 
@@ -137,27 +132,92 @@
 
 /* Number cell design */
 .number-cell{
-    min-height: 1.5rem;    
-    width: 2.5rem;
-    background-color: rgb(181, 179, 179);
-    border: 0.1px solid black;
+    min-height: 1.4rem;     
+    width: 3rem;
+    background-color:#f8f9fa;
+    border-right:  0.1px solid var(--border-color);
+    border-bottom:  0.1px solid var(--border-color);
     position: sticky;
     left: 0px;
+    text-align: center;
 }
 
 
 /* Every cell design */
 .cell{ 
-    min-height: 1.5rem;    
-    width: 6rem;
-    border: 0.1px solid rgb(154, 151, 151);
+    min-height: 1.4rem;     
+    width: 7rem;
+    border-left:  0.1px solid var(--border-color);
+    border-bottom:  0.1px solid var(--border-color);
     outline: none;
+    cursor:cell;
 }
 
 
 /* Last sheet design */
 .sheet-container{
+    background-color: rgb(233, 233, 233);
     width: 100%;
     height: 3vh;
-    background-color: rgb(124, 77, 195);
+    display: flex;
+}
+
+
+.add-sheet{
+    height: 100%;
+    width: 4rem;
+    text-align: center;
+    color:green;
+    border-left:  0.1px solid var(--border-color);
+    border-bottom:  0.1px solid var(--border-color);
+}
+
+
+.sheets-list{
+    height: 100%;
+    flex: 1;
+    display: flex;
+}
+
+#sheet{
+    cursor: pointer;
+    border-left:  0.1px solid var(--border-color);
+    border-bottom:  0.1px solid var(--border-color);
+}
+
+
+#sheet>p{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0.1rem 1rem;
+} 
+
+
+/* Scrollbar design section */
+
+.cell-container::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.cell-container::-webkit-scrollbar
+{
+    height: 11px;
+	width: 11px;
+	background-color: #F5F5F5;
+}
+
+.cell-container::-webkit-scrollbar-thumb
+{
+	border-radius: 2px;
+	background-color: rgb(162, 162, 162);
+}
+
+
+.active-sheet{
+    background-color: rgb(255, 255, 255);
+    font-weight: bold;
 }

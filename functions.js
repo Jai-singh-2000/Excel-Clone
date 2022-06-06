@@ -10,12 +10,19 @@ function solveFormula(formula,selfCellObject)
             let {rowId,colId} = getRowIdColIdFromAddress(formulaComponent);
             let cellObject = db[rowId][colId];
             let value = cellObject.value;
+             
             //If self object is present the push new children 
             if(selfCellObject)
             {
-                cellObject.children.push(selfCellObject.name);
+                cellObject.children.push(selfCellObject.name); //update child in every parent element 
+                selfCellObject.parent.push(cellObject.name); // update parent in this self cell object
             }
             formula = formula.replace(formulaComponent,value);
+
+
+
+            // Update it's children when new formula applied on this cell
+            updateChildren(cellObject);
         }
     }
     let computedValue=eval(formula);
@@ -67,4 +74,21 @@ function updateChildren(cellObject)
         updateChildren(childCellObject)
     }
     
+}
+
+
+//Remove all formula from every child and parent element
+function removeFormula(cellObject){
+    for(let i=0;i<cellObject.parent.length;i++)
+    {
+        let parentName=cellObject.parent[i]; //Select every parent in loop
+        let {rowId,colId}=getRowIdColIdFromAddress(parentName);
+        let parentObject=db[rowId][colId];
+        let updatedChildren=parentObject.children.filter(function(child){ //Filter children without curr object name
+            return child!=cellObject.name;
+        })
+
+        parentObject.children=updatedChildren; // Update children array without current obj name
+        cellObject.parent=[]; // Current object all parents remove 
+    }
 }

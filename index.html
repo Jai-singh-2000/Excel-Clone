@@ -6,11 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excel clone</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+     
 </head>
 <body>
-    <div class="menu-container"></div>
+    
+    <div class="menu-container">
+        <div class="excel-icon">
+        </div>
+    </div>
+
+
     <div class="address-container">
         <input type="text" id="address" value="" disabled>
+        <div class="formula-name"></div>
         <input type="text" id="formula">
     </div>
     <div class="cell-container">
@@ -18,7 +28,17 @@
             <!-- Cells place -->
         </div>
     </div>
-    <div class="sheet-container"></div>
+    <div class="sheet-container">
+        <div class="add-sheet">
+            <i class="material-icons" class="add-sheet">add</i>
+        </div>
+        <div class="sheets-list">
+            <div id="sheet" class="active-sheet"><p>Sheet 1</p></div>
+            <div id="sheet"><p>Sheet 2</p></div>
+            <div id="sheet"><p>Sheet 3</p></div>
+            <div id="sheet"><p>Sheet 4</p></div>
+        </div>
+    </div>
     
     <!-- <script src="Init.js"></script> -->
     <script src="script.js"></script>
