@@ -157,7 +157,7 @@
 /* Last sheet design */
 .sheet-container{
     background-color: rgb(233, 233, 233);
-    width: 100%;
+    min-width: 100%;
     height: 3vh;
     display: flex;
 }
@@ -170,6 +170,7 @@
     color:green;
     border-left:  0.1px solid var(--border-color);
     border-bottom:  0.1px solid var(--border-color);
+    cursor:default;
 }
 
 
@@ -179,20 +180,22 @@
     display: flex;
 }
 
-#sheet{
+.sheet{
     cursor: pointer;
     border-left:  0.1px solid var(--border-color);
     border-bottom:  0.1px solid var(--border-color);
 }
 
 
-#sheet>p{
+.sheet>p{
     height: 100%;
     width: 100%;
     text-align: center;
     box-sizing: border-box;
     padding: 0.1rem 1rem;
 } 
+
+
 
 
 /* Scrollbar design section */

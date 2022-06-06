@@ -4,6 +4,9 @@ let cellContainer=document.querySelector(".cell-container>.cell-inner");
 let addressInput=document.querySelector("#address");
 //formula bar
 let formulaBar=document.querySelector("#formula");
+
+let sheetList=document.querySelector(".sheets-list");
+let addSheetBtn=document.querySelector(".add-sheet");
 let lastSelectedCell;
 
 
@@ -167,9 +170,41 @@ formulaBar.addEventListener("blur",function(e){
 
 
 
+let sheetId=0;
+addSheetBtn.addEventListener("click",function(e){
+    sheetId++;
+    if(sheetId<=8)
+    {
+
+    //Remove active status from last selected sheet
+    let activeSheet=document.querySelector(".active-sheet");
+    activeSheet.classList.remove("active-sheet");
 
 
+    //Create new sheet div
+    let sheetDiv=document.createElement("div");
+    sheetDiv.classList.add("sheet");
+    sheetDiv.classList.add("active-sheet");
+    sheetDiv.setAttribute("sheetid",sheetId);
+    sheetDiv.innerHTML=`<p>Sheet ${sheetId}</p>`;
+    sheetList.append(sheetDiv);
 
-//
 
+    
+    sheetDiv.addEventListener("click",function(){
+        //Remove active status from last selected sheet
+        let activeSheet=document.querySelector(".active-sheet");
+        activeSheet.classList.remove("active-sheet");
+
+        //Add active on new sheet
+        sheetDiv.classList.add("active-sheet");
+    })
+
+    
+
+
+    }
+
+   
+})
 
