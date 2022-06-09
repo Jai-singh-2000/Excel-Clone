@@ -20,7 +20,7 @@
 .excel-icon{
     /* background-color: crimson; */
     width: 3.5rem;
-    background-image: url(/FJP6-main/module3/excel/icons8-microsoft-excel-24.png);
+    background-image: url("excelIcon.png");
     background-repeat: no-repeat;
     background-position: center;
 } 
