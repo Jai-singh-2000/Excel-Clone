@@ -197,26 +197,9 @@ addSheetBtn.addEventListener("click",function(){
     clearUi();
     databaseInit(); //create new db after click on new sheet    
 
-
-        //--------- Add event of toggle on every sheet we create
-        // sheetDiv.addEventListener("click",function(){
-        //     if(sheetDiv.classList.contains("active-sheet"))
-        //     {
-        //         return;
-        //     }
-
-        //     //Remove active status from last selected sheet
-        //     let activeSheet=document.querySelector(".active-sheet");
-        //     activeSheet.classList.remove("active-sheet");
-        //     //Add active on new sheet
-        //     sheetDiv.classList.add("active-sheet");
-        //     console.log(sheetDiv.getAttribute("sheetid"));
-        // })
-
+    //------ Add event of toggle on every sheet we create
+    sheetEventListener(sheetDiv);
         
-        sheetEventListener(sheetDiv);
-        
-
 
     }
 })
@@ -236,6 +219,19 @@ function clearUi()
 }
 
 
+function setUiValue(db)
+{
+    for(let i=0;i<100;i++)
+    {
+            for(let j=0;j<26;j++)
+            {
+                let cell=document.querySelector(`div[rowid="${i}"][colid="${j}"]`);
+                let cellObject=db[i][j];
+                cell.innerHTML=cellObject.value; 
+            }
+    }
+}
+
 function sheetEventListener(sheet)
 {
     sheet.addEventListener("click",function(){
@@ -249,6 +245,10 @@ function sheetEventListener(sheet)
         activeSheet.classList.remove("active-sheet");
         //Add active on new sheet
         sheet.classList.add("active-sheet");
-        console.log(sheet.getAttribute("sheetid"));
+        let sheetId=sheet.getAttribute("sheetid");
+
+        db=allSheetsDb[sheetId]; //Select db of sheetDb[index] Eg:- db = allSheetDb[2] means 3rd sheet db address pass
+        
+        setUiValue(db); //Set value of selected db in Website Ui
     })
 }
