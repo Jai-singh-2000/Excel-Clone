@@ -51,6 +51,7 @@ cellsInit();
 //----------Initialization database array of every cell object
 let allSheetsDb=[];
 let db;
+let visitedCells;
 function databaseInit()
 {
     let newDb=[];
@@ -64,14 +65,24 @@ function databaseInit()
                 value:"",
                 formula:"",
                 children:[],
-                parent:[]
+                parent:[],
+                visited:false,
+                fontStyle:{
+                    bold:false,
+                    italic:false,
+                    underline:false
+                }
             }
             row.push(cellObj);
         }
         newDb.push(row);
     }
-    db=newDb;
-    allSheetsDb.push(newDb);
+    db=newDb;//Make db 
+    
+    visitedCells=[]; //Make visited cell array in every database sheet[index]
+
+    allSheetsDb.push({db:newDb,visitedCells:visitedCells});//Push db and visited array Objects in every sheet
+
     console.log(allSheetsDb);
 }
 
@@ -119,6 +130,15 @@ for(let i=0;i<allCells.length;i++)
 
         // Update it's children when blur event happens because new value is entered
         updateChildren(cellObject);
+
+
+        if(cellObject.visited)//if cell object visited is true already then return
+        {
+            return;
+        }
+        cellObject.visited=true;
+        visitedCells.push({"rowId":rowId,"colId":colId});
+        console.log(visitedCells);
 
     })
 
@@ -204,7 +224,29 @@ addSheetBtn.addEventListener("click",function(){
     }
 })
 
+function sheetEventListener(sheet)
+{
+    sheet.addEventListener("click",function(){
+        if(sheet.classList.contains("active-sheet"))
+        {
+            return;
+        }
+        clearUi();
 
+        //Remove active status from last selected sheet
+        let activeSheet=document.querySelector(".active-sheet");
+        activeSheet.classList.remove("active-sheet");
+        //Add active on new sheet
+        sheet.classList.add("active-sheet");
+        
+        let sheetId=sheet.getAttribute("sheetid");
+        console.log(sheetId);
+        db=allSheetsDb[sheetId].db; //Select db of sheetDb[index] Eg:- db = allSheetDb[2] means 3rd sheet db address pass
+        visitedCells=allSheetsDb[sheetId].visitedCells; //Select visitedCells of sheetDb[index]
+        
+        setUiValue(); //Set value of selected db in Website Ui
+    })
+}
 
 function clearUi()
 {
@@ -219,36 +261,15 @@ function clearUi()
 }
 
 
-function setUiValue(db)
+function setUiValue()
 {
-    for(let i=0;i<100;i++)
+    for(let i=0;i<visitedCells.length;i++)
     {
-            for(let j=0;j<26;j++)
-            {
-                let cell=document.querySelector(`div[rowid="${i}"][colid="${j}"]`);
-                let cellObject=db[i][j];
-                cell.innerHTML=cellObject.value; 
-            }
+        let {rowId,colId}=visitedCells[i];
+        let cellObject=db[rowId][colId];
+        let cell=document.querySelector(`div[rowid="${rowId}"][colid="${colId}"]`);
+        cell.innerHTML=cellObject.value; 
+       console.log(cellObject.value)
     }
 }
 
-function sheetEventListener(sheet)
-{
-    sheet.addEventListener("click",function(){
-        if(sheet.classList.contains("active-sheet"))
-        {
-            return;
-        }
-
-        //Remove active status from last selected sheet
-        let activeSheet=document.querySelector(".active-sheet");
-        activeSheet.classList.remove("active-sheet");
-        //Add active on new sheet
-        sheet.classList.add("active-sheet");
-        let sheetId=sheet.getAttribute("sheetid");
-
-        db=allSheetsDb[sheetId]; //Select db of sheetDb[index] Eg:- db = allSheetDb[2] means 3rd sheet db address pass
-        
-        setUiValue(db); //Set value of selected db in Website Ui
-    })
-}
