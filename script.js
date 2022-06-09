@@ -1,16 +1,18 @@
-//Container 
-let cellContainer=document.querySelector(".cell-container>.cell-inner");
-//address bar
-let addressInput=document.querySelector("#address");
-//formula bar
-let formulaBar=document.querySelector("#formula");
+let cellContainer=document.querySelector(".cell-container>.cell-inner");//Container 
+let addressInput=document.querySelector("#address");//address bar
+let formulaBar=document.querySelector("#formula");//formula bar
 
-let sheetList=document.querySelector(".sheets-list");
+let sheetList=document.querySelector(".sheets-list");//All sheet-list div
+
+let sheetOne=document.querySelector(".sheets-list>.sheet");
+sheetEventListener(sheetOne);//Add event in first sheet 
+
 let addSheetBtn=document.querySelector(".add-sheet");
+
 let lastSelectedCell;
 
 
-//Make 2600 cell by dom
+//----------Make 2600 cell by dom
 function cellsInit()
 {
     let cell="";
@@ -32,7 +34,7 @@ function cellsInit()
         for(let j=0;j<26;j++)
         {
             // cell
-            cell+=`<div class='cell' rowId='${i}' colId='${j}' contentEditable></div>`;
+            cell+=`<div class='cell' rowid='${i}' colid='${j}' contentEditable></div>`;
         }
         cell+="</div>";
     }
@@ -46,11 +48,12 @@ cellsInit();
 
 
 
-//Initialization database array of every cell object
-let db=[];
+//----------Initialization database array of every cell object
+let allSheetsDb=[];
+let db;
 function databaseInit()
 {
-   
+    let newDb=[];
     for(let i=0;i<100;i++)
     {
         let row=[];
@@ -65,17 +68,18 @@ function databaseInit()
             }
             row.push(cellObj);
         }
-        db.push(row);
+        newDb.push(row);
     }
-
-
+    db=newDb;
+    allSheetsDb.push(newDb);
+    console.log(allSheetsDb);
 }
 
 databaseInit();
 
 
 
-//Add event on every cell by loop [cell=2600]
+//------Add event on every cell by loop [cell=2600]
 let allCells=document.querySelectorAll(".cell");
 for(let i=0;i<allCells.length;i++)
 {
@@ -141,7 +145,7 @@ for(let i=0;i<allCells.length;i++)
 }
 
 
-
+ 
 formulaBar.addEventListener("blur",function(e){
     let formula=e.target.value;
     if(formula)
@@ -171,40 +175,78 @@ formulaBar.addEventListener("blur",function(e){
 
 
 let sheetId=0;
-addSheetBtn.addEventListener("click",function(e){
+addSheetBtn.addEventListener("click",function(){
     sheetId++;
-    if(sheetId<=8)
+    if(sheetId<=7)
     {
 
-    //Remove active status from last selected sheet
+    //---------Remove active status from last selected sheet
     let activeSheet=document.querySelector(".active-sheet");
     activeSheet.classList.remove("active-sheet");
 
 
-    //Create new sheet div
+    //---------- Create new sheet div
     let sheetDiv=document.createElement("div");
     sheetDiv.classList.add("sheet");
     sheetDiv.classList.add("active-sheet");
     sheetDiv.setAttribute("sheetid",sheetId);
-    sheetDiv.innerHTML=`<p>Sheet ${sheetId}</p>`;
+    console.log(sheetId);
+    sheetDiv.innerHTML=`<p>Sheet ${sheetId+1}</p>`;
     sheetList.append(sheetDiv);
-
-
     
-    sheetDiv.addEventListener("click",function(){
-        //Remove active status from last selected sheet
-        let activeSheet=document.querySelector(".active-sheet");
-        activeSheet.classList.remove("active-sheet");
+    clearUi();
+    databaseInit(); //create new db after click on new sheet    
 
-        //Add active on new sheet
-        sheetDiv.classList.add("active-sheet");
-    })
 
-    
+        //--------- Add event of toggle on every sheet we create
+        // sheetDiv.addEventListener("click",function(){
+        //     if(sheetDiv.classList.contains("active-sheet"))
+        //     {
+        //         return;
+        //     }
+
+        //     //Remove active status from last selected sheet
+        //     let activeSheet=document.querySelector(".active-sheet");
+        //     activeSheet.classList.remove("active-sheet");
+        //     //Add active on new sheet
+        //     sheetDiv.classList.add("active-sheet");
+        //     console.log(sheetDiv.getAttribute("sheetid"));
+        // })
+        sheetEventListener(sheetDiv);
+        
 
 
     }
-
-   
 })
 
+
+
+function clearUi()
+{
+    for(let i=0;i<100;i++)
+    {
+        for(let j=0;j<26;j++)
+        {
+            let cell=document.querySelector(`div[rowid="${i}"][colid="${j}"]`);
+            cell.innerHTML="";
+        }
+    }
+}
+
+
+function sheetEventListener(sheet)
+{
+    sheet.addEventListener("click",function(){
+        if(sheet.classList.contains("active-sheet"))
+        {
+            return;
+        }
+
+        //Remove active status from last selected sheet
+        let activeSheet=document.querySelector(".active-sheet");
+        activeSheet.classList.remove("active-sheet");
+        //Add active on new sheet
+        sheet.classList.add("active-sheet");
+        console.log(sheet.getAttribute("sheetid"));
+    })
+}
