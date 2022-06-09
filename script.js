@@ -21,7 +21,7 @@ function cellsInit()
     cell+=`<div class="alpha-cells"></div>`;
     for(let i=0;i<26;i++)
     {
-        cell+=`<div class="alpha-cells"><p>${String.fromCharCode(65+i)}</p></div>`;
+        cell+=`<div class="alpha-cells" no="${i}"><p>${String.fromCharCode(65+i)}</p></div>`;
     }
 
 
@@ -30,7 +30,7 @@ function cellsInit()
     for(let i=0;i<100;i++)
     {
         cell+="<div class='cell-row'>"
-        cell+=`<div class='number-cell'>${i+1}</div>`;
+        cell+=`<div class='number-cell' no="${i}">${i+1}</div>`;
         for(let j=0;j<26;j++)
         {
             // cell
@@ -102,9 +102,42 @@ for(let i=0;i<allCells.length;i++)
         let address=String.fromCharCode(65+colId)+(rowId+1);
         addressInput.value=address;
 
+        let cellObject=db[rowId][colId]
         //Show formula value
-        formulaBar.value=db[rowId][colId].formula;
-        // console.log(formulaBar.value);
+        formulaBar.value=cellObject.formula;
+        
+        //Border hover
+        let activeCell=document.querySelector(".active-cell");
+        if(activeCell)
+        {
+            activeCell.classList.remove("active-cell");
+            
+        }
+        let cell=document.querySelector(`div[rowid="${rowId}"][colid="${colId}"]`);
+        cell.classList.add("active-cell");
+        
+        
+        //Row and column address highlight
+
+
+        let activeCol=document.querySelectorAll(".active-address"); //remove previous selected row and column
+        if(activeCol)
+        {
+            for(let i=0;i<activeCol.length;i++)
+            {
+                activeCol[i].classList.remove("active-address");
+            }
+        }
+        
+            
+        let alphaColumn=document.querySelector(`.alpha-cells[no="${colId}"]`); //Add to new alphabet column
+        alphaColumn.classList.add("active-address");
+        
+        let numberRow=document.querySelector(`.number-cell[no="${rowId}"]`);//Add to new number
+        numberRow.classList.add("active-address");
+
+        
+
     })
 
     //Value update after blur event on every cell (total==2600)
