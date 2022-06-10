@@ -169,6 +169,8 @@ for(let i=0;i<allCells.length;i++)
 
     })
 
+
+    //When user click Backspace on C1 which had already formula present then it deletes formula
     allCells[i].addEventListener("keydown",function(e){
         if(e.key=='Backspace')
         {
@@ -178,11 +180,12 @@ for(let i=0;i<allCells.length;i++)
             cellObject.value="";
             if(cellObject.formula)
             {
-                cellObject.formula="";
-                formulaBar.value="";
-                cell.textContent="";
+                cellObject.formula=""; //Update db cell formula
+                formulaBar.value=""; //Clear formula bar on Ui
+                cell.textContent=""; //Cell content got full erase on 1 backspace
 
-                removeFormula(cellObject);
+                //Remove Cell name(C1) from it's Parent's.children Like A1.children[B2,C1] remove C1 from there
+                removeFormula(cellObject); 
             }
         }
 
@@ -203,10 +206,11 @@ formulaBar.addEventListener("blur",function(e){
         //Find cell object of that last selected cell
         let cellObject=db[rowId][colId];
 
-        //If already formula present means we are inserting our new formula 
+        //If already formula present means we are inserting new formula 
         if(cellObject.formula)
         {
-            removeFormula(cellObject); //Remove all previous child and parent name from curr object to add new parent and child
+            //Remove all previous child and parent name from curr object because new formula may contain new parent and child elements 
+            removeFormula(cellObject); 
         }
 
         //Passing cell object in which formula is applied for parent children purpose
@@ -218,7 +222,6 @@ formulaBar.addEventListener("blur",function(e){
         lastSelectedCell.target.textContent= computedValue; //Change in Ui
         
         // console.log(lastSelectedCell);
-        
         updateChildren(cellObject);
     }
 })

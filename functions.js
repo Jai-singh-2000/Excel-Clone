@@ -44,7 +44,7 @@ function solveFormula(formula,selfCellObject)
                     // Update child in every parent element Like in A1.children we push C1 and B2.children we push C1
                     cellObject.children.push(selfCellObject.name); 
     
-                    // Update parent in this self cell object C1.parent we push A1 and then B2
+                    // Update parent in this selfCellObject C1.parent we push A1 and then B2
                     selfCellObject.parent.push(cellObject.name); 
                 }
                  
@@ -94,18 +94,20 @@ function updateChildren(cellObject)
 }
 
 
-//Remove all formula from every child and parent element
-function removeFormula(cellObject){
+//Remove all formula from every child and parent element C1{parent:[A1,D3]}
+function removeFormula(cellObject){ 
     for(let i=0;i<cellObject.parent.length;i++)
     {
-        let parentName=cellObject.parent[i]; //Select every parent in loop
+        let parentName=cellObject.parent[i]; //Select every parent in loop like A1 and D3
         let {rowId,colId}=getRowIdColIdFromAddress(parentName);
-        let parentObject=db[rowId][colId];
-        let updatedChildren=parentObject.children.filter(function(child){ //Filter children without curr object name
-            return child!=cellObject.name;
+        let parentObject=db[rowId][colId]; //Select parent object like A1 object {children:[C1,E4,G6]}
+        
+        //Filter children without curr object name
+        let updatedChildren=parentObject.children.filter(function(child){ //Pass C1,E4,G6 in child one by one
+            return child!=cellObject.name; //( CellObject Name == C1 ) UpdatedChildren would be [E4, G6] 
         })
 
-        parentObject.children=updatedChildren; // Update children array without current obj name
-        cellObject.parent=[]; // Current object all parents remove 
+        parentObject.children=updatedChildren; // Update Old children array with new Updated children array
     }
+    cellObject.parent=[]; // Current object all parents remove C1{ parent:[] }
 }
