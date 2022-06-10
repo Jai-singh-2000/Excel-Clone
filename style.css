@@ -123,7 +123,7 @@
 {
     /* width: 2.5rem; */
     height: 1.5rem; 
-    min-width: 3rem;
+    width: 3rem;
     background-color: rgb(233, 233, 233);
     position: sticky;
     top: 0px;
@@ -133,10 +133,11 @@
 /* Alphabet cells */
 .alpha-cells{
     height: 1.5rem;    
-    min-width: 7rem;
+    width: 7rem;
     border-left:  0.1px solid var(--border-color);
     border-bottom:  0.1px solid var(--border-color);
     display: flex;
+    box-sizing: border-box;
     background-color: #f8f9fa;
 }
 
@@ -146,7 +147,6 @@
     width: 100%;
     text-align: center;
     vertical-align: bottom;
-
 }
 
 
@@ -159,20 +159,26 @@
 /* Number cell design */
 .number-cell{
     min-height: 1.4rem;     
-    min-width: 3rem;
+    width: 3rem;
     background-color:#f8f9fa;
     border-right:  0.1px solid var(--border-color);
     border-bottom:  0.1px solid var(--border-color);
     position: sticky;
     left: 0px;
     text-align: center;
+    box-sizing: border-box;
 }
 
+.number-cell>p{
+    padding: 0.3rem 0; 
+    width: 100%;
+    text-align: center;
+}
 
 /* Every cell design */
 .cell{ 
     min-height: 1.4rem;     
-    min-width: 7rem;
+    width: 7rem;
     border-left:  0.1px solid var(--border-color);
     border-bottom:  0.1px solid var(--border-color);
     outline: none;
@@ -259,5 +265,5 @@
 }
 
 .active-address{
-    background-color: yellow;
+    background-color: rgb(225, 225, 222);
 }

@@ -30,7 +30,7 @@ function cellsInit()
     for(let i=0;i<100;i++)
     {
         cell+="<div class='cell-row'>"
-        cell+=`<div class='number-cell' no="${i}">${i+1}</div>`;
+        cell+=`<div class='number-cell' no="${i}"><p>${i+1}</p></div>`;
         for(let j=0;j<26;j++)
         {
             // cell
@@ -66,12 +66,7 @@ function databaseInit()
                 formula:"",
                 children:[],
                 parent:[],
-                visited:false,
-                fontStyle:{
-                    bold:false,
-                    italic:false,
-                    underline:false
-                }
+                visited:false
             }
             row.push(cellObj);
         }
@@ -106,6 +101,8 @@ for(let i=0;i<allCells.length;i++)
         //Show formula value
         formulaBar.value=cellObject.formula;
         
+
+
         //Border hover
         let activeCell=document.querySelector(".active-cell");
         if(activeCell)
@@ -118,7 +115,6 @@ for(let i=0;i<allCells.length;i++)
         
         
         //Row and column address highlight
-
 
         let activeCol=document.querySelectorAll(".active-address"); //remove previous selected row and column
         if(activeCol)
@@ -144,9 +140,7 @@ for(let i=0;i<allCells.length;i++)
     allCells[i].addEventListener("blur",function(e){
         let cellValue=e.target.textContent;
 
-        //Last selected cell details after blur event happen
-        lastSelectedCell=e;
-        // console.log(lastSelectedCell);
+        lastSelectedCell=e; //Last selected cell details after blur event happen
 
         //`Object destructing` after return object value from (function getRowAndColId)
         let{rowId,colId}=getRowAndColId(e);
@@ -161,11 +155,11 @@ for(let i=0;i<allCells.length;i++)
         cellObject.value=cellValue;
         console.log("After update");
 
-        // Update it's children when blur event happens because new value is entered
-        updateChildren(cellObject);
+        //-----Update it's children when blur event happens because new value is entered
+        updateChildren(cellObject); //If blur happens in A1 then update all It's children value as well
 
-
-        if(cellObject.visited)//if cell object visited is true already then return
+        //-----------If cell object visited is true already then return
+        if(cellObject.visited)
         {
             return;
         }
@@ -198,19 +192,23 @@ for(let i=0;i<allCells.length;i++)
 }
 
 
- 
+//Event when we insert formula in formula bar
 formulaBar.addEventListener("blur",function(e){
-    let formula=e.target.value;
+    let formula=e.target.value; //Take value from formula bar
+
     if(formula)
     {
-        let{rowId,colId}=getRowAndColId(lastSelectedCell);
-        //Get cell object of that last selected cell
+        let{rowId,colId}=getRowAndColId(lastSelectedCell);//Get row&col id of lastSelected cell
+
+        //Find cell object of that last selected cell
         let cellObject=db[rowId][colId];
 
-        if(cellObject.formula)//If already formula present means we are changing out formula
+        //If already formula present means we are inserting our new formula 
+        if(cellObject.formula)
         {
             removeFormula(cellObject); //Remove all previous child and parent name from curr object to add new parent and child
         }
+
         //Passing cell object in which formula is applied for parent children purpose
         let computedValue=solveFormula(formula,cellObject);
         
@@ -218,7 +216,8 @@ formulaBar.addEventListener("blur",function(e){
         cellObject.formula=formula;//Update new formula
 
         lastSelectedCell.target.textContent= computedValue; //Change in Ui
-        console.log(lastSelectedCell);
+        
+        // console.log(lastSelectedCell);
         
         updateChildren(cellObject);
     }
@@ -257,6 +256,7 @@ addSheetBtn.addEventListener("click",function(){
     }
 })
 
+
 function sheetEventListener(sheet)
 {
     sheet.addEventListener("click",function(){
@@ -280,6 +280,7 @@ function sheetEventListener(sheet)
         setUiValue(); //Set value of selected db in Website Ui
     })
 }
+
 
 function clearUi()
 {
