@@ -17,6 +17,10 @@ let bold=document.querySelector(".bold");
 let italic=document.querySelector(".italic");
 let underline=document.querySelector(".underline");
 
+let leftAlignIcon=document.querySelector(".left-side");
+let centerAlignIcon=document.querySelector(".center-side");
+let rightAlignIcon=document.querySelector(".right-side");
+
 let bgColorIcon=document.querySelector("input[id='bg-color']");
 let textColorIcon=document.querySelector("input[id='text-color']");
 
@@ -24,6 +28,7 @@ let topIcon=document.querySelector(".top-border");
 let rightIcon=document.querySelector(".right-border");
 let bottomIcon=document.querySelector(".bottom-border");
 let leftIcon=document.querySelector(".left-border");
+let outerIcon=document.querySelector(".outer-border");
 
 bold.addEventListener("click",function()
 {
@@ -69,7 +74,26 @@ leftIcon.addEventListener("click",function()
     setFontStyle("left",leftIcon);
 })
 
+outerIcon.addEventListener("click",function()
+{
+    setFontStyle("outer",outerIcon);
+})
 
+
+leftAlignIcon.addEventListener("click",function()
+{
+    setFontStyle("leftAlign",leftAlignIcon);
+})
+
+centerAlignIcon.addEventListener("click",function()
+{
+    setFontStyle("centerAlign",centerAlignIcon);
+})
+
+rightAlignIcon.addEventListener("click",function()
+{
+    setFontStyle("rightAlign",rightAlignIcon);
+})
 
 
 /*--------------Make 2600 cell by DOM------------------------*/
@@ -137,8 +161,15 @@ function databaseInit()
                     top:false,
                     right:false,
                     bottom:false,
-                    left:false
+                    left:false,
+                    outer:false
+                },
+                alignStyle:{
+                    leftAlign:true,
+                    centerAlign:false,
+                    rightAlign:false
                 }
+
                 
             }
             row.push(cellObj);
@@ -456,28 +487,32 @@ function setFontStyle(styleName,iconElement)
 
         
 
-        //If syleName is bold ,It will check for cellObject.fontStyle.bold is true means you are click again
+       //Check for border style
         if(cellObject.borderStyle[styleName])
         {
 
             if(styleName=="top")
             {
-                lastSelectedCell.target.style.borderTop="none";
+                lastSelectedCell.target.style.borderTop=null;
             }else if(styleName=="right")
             {
-                lastSelectedCell.target.style.borderRight="none";
+                lastSelectedCell.target.style.borderRight=null;
             }else if(styleName=="bottom"){
-                lastSelectedCell.target.style.borderBottom="none";
+                lastSelectedCell.target.style.borderBottom=null;
             }
             else if(styleName=="left"){
-                lastSelectedCell.target.style.borderLeft="none";
+                lastSelectedCell.target.style.borderLeft=null;
             }
-
+            else if(styleName=="outer"){
+                lastSelectedCell.target.style.border=null;
+               
+            }
+            
+           
 
             iconElement.classList.remove("active-font-style");
 
         }else{ 
-            //If bold is false it means Now I made is true
             if(styleName=="top")
             {
                 lastSelectedCell.target.style.borderTop="1.5px solid black";
@@ -491,15 +526,75 @@ function setFontStyle(styleName,iconElement)
             else if(styleName=="left"){
                 lastSelectedCell.target.style.borderLeft="1.5px solid black";
             }
+            else if(styleName=="outer"){
+                lastSelectedCell.target.style.border="1.5px solid black";
+            }
+
+
             iconElement.classList.add("active-font-style");
+
+
+            
             
         }
-        //If bold is true before it make false
         cellObject.borderStyle[styleName] =!cellObject.borderStyle[styleName]; 
 
 
-    }
 
+
+
+
+
+
+
+
+            // if left is align then make right and center object false and also remove active class from them and vice versa
+            if(styleName=="leftAlign")
+            {
+                lastSelectedCell.target.style.textAlign="left";
+
+                cellObject.alignStyle.leftAlign=true;
+                cellObject.alignStyle.centerAlign=false;
+                cellObject.alignStyle.rightAlign=false;
+
+                leftAlignIcon.classList.add("active-font-style");
+                centerAlignIcon.classList.remove("active-font-style");
+                rightAlignIcon.classList.remove("active-font-style");
+                console.log(cellObject);
+            }else if(styleName=="centerAlign")
+            {
+                lastSelectedCell.target.style.textAlign="center";
+                cellObject.alignStyle.centerAlign=true;
+                cellObject.alignStyle.leftAlign=false;
+                cellObject.alignStyle.rightAlign=false;
+
+                centerAlignIcon.classList.add("active-font-style");
+                leftAlignIcon.classList.remove("active-font-style");
+                rightAlignIcon.classList.remove("active-font-style");
+                console.log(cellObject);
+                
+            }else if(styleName=="rightAlign"){
+                lastSelectedCell.target.style.textAlign="right";
+                cellObject.alignStyle.rightAlign=true;
+                cellObject.alignStyle.leftAlign=false;
+                cellObject.alignStyle.centerAlign=false;
+
+                rightAlignIcon.classList.add("active-font-style");
+                centerAlignIcon.classList.remove("active-font-style");
+                leftAlignIcon.classList.remove("active-font-style");
+                console.log(cellObject);
+            }
+
+    
+
+
+
+
+
+
+
+
+    }
 }
 
 function checkForIconStyle(cellObject)
@@ -592,4 +687,50 @@ function checkForIconStyle(cellObject)
         }else{
             leftBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
         }
+
+        let outerBorderIcon=document.querySelector(".outer-border");
+        if(cellObject.borderStyle.outer)//If underline is true
+        {
+            outerBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+        }else{
+            outerBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+
+
+
+
+
+
+
+
+        let leftAlignIcon=document.querySelector(".left-side");
+        if(cellObject.alignStyle.leftAlign)//If underline is true
+        {
+            leftAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+        }else{
+            leftAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+
+
+        let centerAlignIcon=document.querySelector(".center-side");
+        if(cellObject.alignStyle.centerAlign)//If underline is true
+        {
+            centerAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+        }else{
+            centerAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+
+
+        let rightAlignIcon=document.querySelector(".right-side");
+        if(cellObject.alignStyle.rightAlign)//If underline is true
+        {
+            rightAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+        }else{
+            rightAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+
+
+
+
+
 } 
