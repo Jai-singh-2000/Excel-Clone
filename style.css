@@ -10,12 +10,29 @@
 }
 
 
-/* Top menu style */
+/* Top Useless bar */
+.top-bar{
+    height: 4vh;
+    width: 100%;
+    text-align: center;
+    background-color:  #0db128;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+/* Menu style */
 .menu-container{
     height: 4.5vh;
     width: 100%;
     display: flex;
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa; */
+    /* background-color: #3a87d3; */
+    /* background-color: #3a87d3; */
 }
 
 .excel-icon{
@@ -29,12 +46,12 @@
 .font-style{
     /* background-color: yellow; */
     display: flex;
-    width: 10rem;
+    width: 11rem;
     justify-content: space-around;
     align-items: center;
 }
 
-.font-style>div{
+.font-style>div,.cell-border-style>div{
     /* background-color: #939496; */
     box-sizing: border-box;
     width: 2rem;
@@ -45,12 +62,48 @@
     align-items: center;
 }
 
-.font-style>div:hover{
-    background-color: rgb(203, 204, 204);
+.font-style>div:hover ,.cell-border-style>div:hover{
     cursor: pointer;
+    background-color: rgb(203, 204, 204);
     border-radius: 4px;
-    opacity: 0.6;
+    opacity: 0.4;
+    
 }
+
+
+.color-style{
+    /* background-color: rgb(255, 115, 0); */
+    display: flex;
+    width: 6rem;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.cell-border-style{
+    /* background-color: rgb(255, 115, 0); */
+    display: flex;
+    width: 15rem;
+    justify-content: space-around;;
+    align-items: center;
+}
+/* Change in color picker icon */
+input[type="color"] 
+{
+    border: 0;
+    width: 1.8rem;
+    margin-left: 0.4rem;
+}
+
+
+.text-style{
+    /* background-color: rgb(255, 0, 242); */
+    display: flex;
+    width: 10rem;
+    justify-content: center;
+    align-items: center;
+}
+
 
 
 /* Address bar style */
@@ -95,7 +148,7 @@
 
 
 .cell-container{
-    height: 88vh;
+    height: 84vh;
     background-color: #ffffff;  
     overflow-x: scroll;
     overflow-y: scroll;
@@ -266,4 +319,11 @@
 
 .active-address{
     background-color: rgb(225, 225, 222);
+}
+
+.active-font-style{
+    /* background-color: rgb(203, 204, 204); */
+    background-color: rgb(203, 204, 204);
+    border-radius: 4px;
+    opacity: 0.8;
 }

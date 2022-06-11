@@ -51,10 +51,7 @@ function solveFormula(formula,selfCellObject)
                 formula = formula.replace(formulaComponent,value);
                 // console.log( cellObject);
     
-    
-                // When we update new formula in cell object then child value must be change according to new formula
-                // Befor C1 = A1 + 2, Now C1=A1 + 15 then any C1 child like D1 value must be update
-                // updateChildren(cellObject); 
+
             }
         }
         let computedValue=eval(formula); //Calculate value by evaluate function

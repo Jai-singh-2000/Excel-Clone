@@ -11,8 +11,38 @@ let addSheetBtn=document.querySelector(".add-sheet");
 
 let lastSelectedCell;
 
+/*Set event listener on menu icons */
 
-//----------Make 2600 cell by dom
+let bold=document.querySelector(".bold");
+let italic=document.querySelector(".italic");
+let underline=document.querySelector(".underline");
+let bgColorIcon=document.querySelector("input[id='bg-color']");
+let textColorIcon=document.querySelector("input[id='text-color']");
+
+bold.addEventListener("click",function()
+{
+    setFontStyle("bold",bold);
+})
+
+italic.addEventListener("click",function()
+{
+    setFontStyle("italic",italic);
+})
+
+underline.addEventListener("click",function()
+{
+    setFontStyle("underline",underline);
+})
+
+bgColorIcon.addEventListener("blur",function(){
+    setFontStyle("bgColor",bgColorIcon);
+})
+
+textColorIcon.addEventListener("blur",function(){
+    setFontStyle("textColor",textColorIcon);
+})
+
+//----------Make 2600 cell by DOM
 function cellsInit()
 {
     let cell="";
@@ -66,7 +96,14 @@ function databaseInit()
                 formula:"",
                 children:[],
                 parent:[],
-                visited:false
+                visited:false,
+                fontStyle:{
+                    bold:false,
+                    italic:false,
+                    underline:false
+                },
+                bgColor:"#000000",
+                textColor:"#000000"
             }
             row.push(cellObj);
         }
@@ -102,7 +139,6 @@ for(let i=0;i<allCells.length;i++)
         formulaBar.value=cellObject.formula;
         
 
-
         //Border hover
         let activeCell=document.querySelector(".active-cell");
         if(activeCell)
@@ -110,13 +146,13 @@ for(let i=0;i<allCells.length;i++)
             activeCell.classList.remove("active-cell");
             
         }
-        let cell=document.querySelector(`div[rowid="${rowId}"][colid="${colId}"]`);
+        let cell=document.querySelector(`div[rowid="${rowId}"][colid="${colId}"]`); //Change in ui
         cell.classList.add("active-cell");
         
         
         //Row and column address highlight
 
-        let activeCol=document.querySelectorAll(".active-address"); //remove previous selected row and column
+        let activeCol=document.querySelectorAll(".active-address"); //Remove previous selected row and column
         if(activeCol)
         {
             for(let i=0;i<activeCol.length;i++)
@@ -124,14 +160,18 @@ for(let i=0;i<allCells.length;i++)
                 activeCol[i].classList.remove("active-address");
             }
         }
-        
-            
-        let alphaColumn=document.querySelector(`.alpha-cells[no="${colId}"]`); //Add to new alphabet column
+
+        //Add to new alphabet column
+        let alphaColumn=document.querySelector(`.alpha-cells[no="${colId}"]`); 
         alphaColumn.classList.add("active-address");
         
-        let numberRow=document.querySelector(`.number-cell[no="${rowId}"]`);//Add to new number
+        //Add to new number
+        let numberRow=document.querySelector(`.number-cell[no="${rowId}"]`);
         numberRow.classList.add("active-address");
 
+
+        //--------Check for font-style
+        checkForIconStyle(cellObject);
         
 
     })
@@ -153,7 +193,7 @@ for(let i=0;i<allCells.length;i++)
 
         //If user input new value in cell then update that value in cellObject alse
         cellObject.value=cellValue;
-        console.log("After update");
+        console.log("After update ");
 
         //-----Update it's children when blur event happens because new value is entered
         updateChildren(cellObject); //If blur happens in A1 then update all It's children value as well
@@ -223,6 +263,16 @@ formulaBar.addEventListener("blur",function(e){
         
         // console.log(lastSelectedCell);
         updateChildren(cellObject);
+
+        
+        //-----------If cell object visited is true already then return
+        if(cellObject.visited)
+        {
+            return;
+        }
+        cellObject.visited=true;
+        visitedCells.push({"rowId":rowId,"colId":colId});
+        console.log(visitedCells);
     }
 })
 
@@ -310,3 +360,117 @@ function setUiValue()
     }
 }
 
+
+function setFontStyle(styleName,iconElement)
+{   
+    // let boldIcon=document.querySelector(".bold");
+    if(lastSelectedCell) //If any cell selected already then that is our lastSelected cell
+    {
+        let {rowId,colId}=getRowAndColId(lastSelectedCell);
+        let cellObject= db[rowId][colId];
+        console.log(cellObject.fontStyle[styleName]);   
+        
+        //If syleName is bold ,It will check for cellObject.fontStyle.bold is true means you are click again
+        if(cellObject.fontStyle[styleName])
+        {
+
+            if(styleName=="bold")
+            {
+                lastSelectedCell.target.style.fontWeight="normal";
+            }else if(styleName=="italic")
+            {
+                lastSelectedCell.target.style.fontStyle="normal";
+            }else if(styleName=="underline"){
+                lastSelectedCell.target.style.textDecoration="none";
+            }
+
+            iconElement.classList.remove("active-font-style");
+
+        }else{ 
+            
+            //If bold is false it means Now I made is true
+            if(styleName=="bold")
+            {
+                lastSelectedCell.target.style.fontWeight="bold";
+                
+            }else if(styleName=="italic")
+            {
+                lastSelectedCell.target.style.fontStyle="italic";
+            }else if(styleName=="underline"){
+                lastSelectedCell.target.style.textDecoration="underline";   
+            }
+
+
+            iconElement.classList.add("active-font-style");
+        }
+        //If bold is true before it make false
+        cellObject.fontStyle[styleName] =!cellObject.fontStyle[styleName]; 
+
+
+        //Check for background color
+        if(styleName=="bgColor"){
+            cellObject.bgColor=iconElement.value;//Change in object value
+            lastSelectedCell.target.style.background=iconElement.value;//Change in ui
+        }
+
+
+        if(styleName=="textColor"){
+            cellObject.textColor=iconElement.value;//Change in object value
+            lastSelectedCell.target.style.color=iconElement.value;//Change in ui
+        }
+
+
+
+    }
+
+}
+
+function checkForIconStyle(cellObject)
+{
+        let boldIcon=document.querySelector(".bold");
+        if(cellObject.fontStyle.bold)//If bold is true
+        {
+            boldIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on ui
+        }else{
+            boldIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+
+
+        let italicIcon=document.querySelector(".italic");
+        if(cellObject.fontStyle.italic)//If italic is true
+        {
+            italicIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
+        }else{
+            italicIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
+        }
+
+
+        let underlineIcon=document.querySelector(".underline");
+        if(cellObject.fontStyle.underline)//If underline is true
+        {
+            underlineIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+        }else{
+            underlineIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+
+        let bgColorIcon=document.querySelector("input[id='bg-color']");
+        if(cellObject.bgColor!="#000000")//If color is not black
+        {
+            //we have to change bg-color it on ui
+            bgColorIcon.value=cellObject.bgColor; 
+        }else{
+            // remove bg-color on ui
+            bgColorIcon.value="#000000"; 
+        }
+
+        let textColorIcon=document.querySelector("input[id='text-color']");
+        if(cellObject.textColor!="#000000")//If color is not black
+        {
+            //we have to change text-color it on ui
+            textColorIcon.value=cellObject.textColor; 
+        }else{
+            //remove text-color on ui
+            textColorIcon.value="#000000"; 
+        }
+        
+}
