@@ -43,6 +43,35 @@
 } 
 
 
+
+.text-style{
+    /* background-color: rgb(255, 0, 242); */
+    display: flex;
+    width: 10rem;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.color-style{
+    /* background-color: rgb(255, 115, 0); */
+    display: flex;
+    width: 6rem;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.cell-border-style{
+    /* background-color: rgb(255, 115, 0); */
+    display: flex;
+    width: 15rem;
+    justify-content: space-around;;
+    align-items: center;
+}
+
+
 .font-style{
     /* background-color: yellow; */
     display: flex;
@@ -71,22 +100,9 @@
 }
 
 
-.color-style{
-    /* background-color: rgb(255, 115, 0); */
-    display: flex;
-    width: 6rem;
-    justify-content: center;
-    align-items: center;
-}
 
 
-.cell-border-style{
-    /* background-color: rgb(255, 115, 0); */
-    display: flex;
-    width: 15rem;
-    justify-content: space-around;;
-    align-items: center;
-}
+
 /* Change in color picker icon */
 input[type="color"] 
 {
@@ -96,13 +112,7 @@ input[type="color"]
 }
 
 
-.text-style{
-    /* background-color: rgb(255, 0, 242); */
-    display: flex;
-    width: 10rem;
-    justify-content: center;
-    align-items: center;
-}
+
 
 
 

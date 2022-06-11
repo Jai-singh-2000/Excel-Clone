@@ -11,13 +11,19 @@ let addSheetBtn=document.querySelector(".add-sheet");
 
 let lastSelectedCell;
 
-/*Set event listener on menu icons */
+/*--------------------Set event listener on menu icons------------------------ */
 
 let bold=document.querySelector(".bold");
 let italic=document.querySelector(".italic");
 let underline=document.querySelector(".underline");
+
 let bgColorIcon=document.querySelector("input[id='bg-color']");
 let textColorIcon=document.querySelector("input[id='text-color']");
+
+let topIcon=document.querySelector(".top-border");
+let rightIcon=document.querySelector(".right-border");
+let bottomIcon=document.querySelector(".bottom-border");
+let leftIcon=document.querySelector(".left-border");
 
 bold.addEventListener("click",function()
 {
@@ -42,7 +48,31 @@ textColorIcon.addEventListener("blur",function(){
     setFontStyle("textColor",textColorIcon);
 })
 
-//----------Make 2600 cell by DOM
+
+topIcon.addEventListener("click",function()
+{
+    setFontStyle("top",topIcon);
+})
+
+rightIcon.addEventListener("click",function()
+{
+    setFontStyle("right",rightIcon);
+})
+
+bottomIcon.addEventListener("click",function()
+{
+    setFontStyle("bottom",bottomIcon);
+})
+
+leftIcon.addEventListener("click",function()
+{
+    setFontStyle("left",leftIcon);
+})
+
+
+
+
+/*--------------Make 2600 cell by DOM------------------------*/
 function cellsInit()
 {
     let cell="";
@@ -78,7 +108,7 @@ cellsInit();
 
 
 
-//----------Initialization database array of every cell object
+//----------Initialization database array of every cell object-----------------------
 let allSheetsDb=[];
 let db;
 let visitedCells;
@@ -97,13 +127,19 @@ function databaseInit()
                 children:[],
                 parent:[],
                 visited:false,
+                bgColor:"#000000",
+                textColor:"#000000",
                 fontStyle:{
                     bold:false,
                     italic:false,
                     underline:false
-                },
-                bgColor:"#000000",
-                textColor:"#000000"
+                },borderStyle:{
+                    top:false,
+                    right:false,
+                    bottom:false,
+                    left:false
+                }
+                
             }
             row.push(cellObj);
         }
@@ -368,7 +404,7 @@ function setFontStyle(styleName,iconElement)
     {
         let {rowId,colId}=getRowAndColId(lastSelectedCell);
         let cellObject= db[rowId][colId];
-        console.log(cellObject.fontStyle[styleName]);   
+        console.log(styleName);   
         
         //If syleName is bold ,It will check for cellObject.fontStyle.bold is true means you are click again
         if(cellObject.fontStyle[styleName])
@@ -387,7 +423,6 @@ function setFontStyle(styleName,iconElement)
             iconElement.classList.remove("active-font-style");
 
         }else{ 
-            
             //If bold is false it means Now I made is true
             if(styleName=="bold")
             {
@@ -400,14 +435,14 @@ function setFontStyle(styleName,iconElement)
                 lastSelectedCell.target.style.textDecoration="underline";   
             }
 
-
             iconElement.classList.add("active-font-style");
+
         }
         //If bold is true before it make false
         cellObject.fontStyle[styleName] =!cellObject.fontStyle[styleName]; 
 
 
-        //Check for background color
+        //------------Check for background color
         if(styleName=="bgColor"){
             cellObject.bgColor=iconElement.value;//Change in object value
             lastSelectedCell.target.style.background=iconElement.value;//Change in ui
@@ -419,6 +454,48 @@ function setFontStyle(styleName,iconElement)
             lastSelectedCell.target.style.color=iconElement.value;//Change in ui
         }
 
+        
+
+        //If syleName is bold ,It will check for cellObject.fontStyle.bold is true means you are click again
+        if(cellObject.borderStyle[styleName])
+        {
+
+            if(styleName=="top")
+            {
+                lastSelectedCell.target.style.borderTop="none";
+            }else if(styleName=="right")
+            {
+                lastSelectedCell.target.style.borderRight="none";
+            }else if(styleName=="bottom"){
+                lastSelectedCell.target.style.borderBottom="none";
+            }
+            else if(styleName=="left"){
+                lastSelectedCell.target.style.borderLeft="none";
+            }
+
+
+            iconElement.classList.remove("active-font-style");
+
+        }else{ 
+            //If bold is false it means Now I made is true
+            if(styleName=="top")
+            {
+                lastSelectedCell.target.style.borderTop="1.5px solid black";
+                
+            }else if(styleName=="right")
+            {
+                lastSelectedCell.target.style.borderRight="1.5px solid black";
+            }else if(styleName=="bottom"){
+                lastSelectedCell.target.style.borderBottom="1.5px solid black";
+            }
+            else if(styleName=="left"){
+                lastSelectedCell.target.style.borderLeft="1.5px solid black";
+            }
+            iconElement.classList.add("active-font-style");
+            
+        }
+        //If bold is true before it make false
+        cellObject.borderStyle[styleName] =!cellObject.borderStyle[styleName]; 
 
 
     }
@@ -473,4 +550,46 @@ function checkForIconStyle(cellObject)
             textColorIcon.value="#000000"; 
         }
         
-}
+
+
+
+
+
+
+
+
+
+        let topBorderIcon=document.querySelector(".top-border");
+        if(cellObject.borderStyle.top)//If italic is true
+        {
+            topBorderIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
+        }else{
+            topBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
+        }
+
+        let rightBorderIcon=document.querySelector(".right-border");
+        if(cellObject.borderStyle.right)//If italic is true
+        {
+            rightBorderIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
+        }else{
+            rightBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
+        }
+
+
+        let bottomBorderIcon=document.querySelector(".bottom-border");
+        if(cellObject.borderStyle.bottom)//If underline is true
+        {
+            bottomBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+        }else{
+            bottomBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+
+
+        let leftBorderIcon=document.querySelector(".left-border");
+        if(cellObject.borderStyle.left)//If underline is true
+        {
+            leftBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+        }else{
+            leftBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+        }
+} 
