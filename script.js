@@ -203,7 +203,7 @@ function databaseInit()
 
     allSheetsDb.push({db:newDb,visitedCells:visitedCells});//Push db and visited array Objects in every sheet
 
-    console.log(allSheetsDb);
+    // console.log(allSheetsDb);
 }
 
 databaseInit();
@@ -363,7 +363,7 @@ for(let i=0;i<allCells.length;i++)
             }
             cellObject.visited=true;
             visitedCells.push({"rowId":rowId,"colId":colId});
-            console.log(visitedCells);
+            // console.log(visitedCells);
         }
     })
 
@@ -386,7 +386,7 @@ for(let i=0;i<allCells.length;i++)
         sheetDiv.classList.add("sheet");
         sheetDiv.classList.add("active-sheet");
         sheetDiv.setAttribute("sheetid",sheetId);
-        console.log(sheetId);
+        
         sheetDiv.innerHTML=`<p>Sheet ${sheetId+1}</p>`;
         sheetList.append(sheetDiv);
         
@@ -401,473 +401,468 @@ for(let i=0;i<allCells.length;i++)
     })
 
 
-    function sheetEventListener(sheet)
-    {
-        sheet.addEventListener("click",function(){
-            if(sheet.classList.contains("active-sheet"))
-            {
-                return;
-            }
-            clearUi();
+//     function sheetEventListener(sheet)
+//     {
+//         sheet.addEventListener("click",function(){
+//             if(sheet.classList.contains("active-sheet"))
+//             {
+//                 return;
+//             }
+//             clearUi();
 
-            //Remove active status from last selected sheet
-            let activeSheet=document.querySelector(".active-sheet");
-            activeSheet.classList.remove("active-sheet");
-            //Add active on new sheet
-            sheet.classList.add("active-sheet");
+//             //Remove active status from last selected sheet
+//             let activeSheet=document.querySelector(".active-sheet");
+//             activeSheet.classList.remove("active-sheet");
+//             //Add active on new sheet
+//             sheet.classList.add("active-sheet");
             
-            let sheetId=sheet.getAttribute("sheetid");
-            console.log(sheetId);
-            db=allSheetsDb[sheetId].db; //Select db of sheetDb[index] Eg:- db = allSheetDb[2] means 3rd sheet db address pass
-            visitedCells=allSheetsDb[sheetId].visitedCells; //Select visitedCells of sheetDb[index]
+//             let sheetId=sheet.getAttribute("sheetid");
+//             console.log(sheetId);
+//             db=allSheetsDb[sheetId].db; //Select db of sheetDb[index] Eg:- db = allSheetDb[2] means 3rd sheet db address pass
+//             visitedCells=allSheetsDb[sheetId].visitedCells; //Select visitedCells of sheetDb[index]
             
-            setUiValue(); //Set value of selected db in Website Ui
-        })
-    }
+//             setUiValue(); //Set value of selected db in Website Ui
+//         })
+//     }
 
 
-    function clearUi()
-    {
-        for(let i=0;i<100;i++)
-        {
-            for(let j=0;j<26;j++)
-            {
-                let cell=document.querySelector(`div[rowid="${i}"][colid="${j}"]`);
-                cell.innerHTML="";
-            }
-        }
-    }
+//     function clearUi()
+//     {
+//         for(let i=0;i<100;i++)
+//         {
+//             for(let j=0;j<26;j++)
+//             {
+//                 let cell=document.querySelector(`div[rowid="${i}"][colid="${j}"]`);
+//                 cell.innerHTML="";
+//             }
+//         }
+//     }
 
 
-    function setUiValue()
-    {
-        for(let i=0;i<visitedCells.length;i++)
-        {
-            let {rowId,colId}=visitedCells[i];
-            let cellObject=db[rowId][colId];
-            let cell=document.querySelector(`div[rowid="${rowId}"][colid="${colId}"]`);
-            cell.innerHTML=cellObject.value; 
-        console.log(cellObject.value)
-        }
-    }
+//     function setUiValue()
+//     {
+//         for(let i=0;i<visitedCells.length;i++)
+//         {
+//             let {rowId,colId}=visitedCells[i];
+//             let cellObject=db[rowId][colId];
+//             let cell=document.querySelector(`div[rowid="${rowId}"][colid="${colId}"]`);
+//             cell.innerHTML=cellObject.value; 
+//         console.log(cellObject.value)
+//         }
+//     }
 
 
-    function setFontStyle(styleName,iconElement)
-    {   
+//     function setFontStyle(styleName,iconElement)
+//     {   
 
-        if(lastSelectedCell) //If any cell selected already then that is our lastSelected cell
-        {
-
-
-            let {rowId,colId}=getRowAndColId(lastSelectedCell);
-            let cellObject= db[rowId][colId];  
+//         if(lastSelectedCell) //If any cell selected already then that is our lastSelected cell
+//         {
 
 
-            //Change in font family
+//             let {rowId,colId}=getRowAndColId(lastSelectedCell);
+//             let cellObject= db[rowId][colId];  
 
 
-            if(styleName=="roboto")
-            {
-                lastSelectedCell.target.style.fontFamily="Roboto,RobotoDraft,Helvetica,Arial,sans-serif";
+//             //Change in font family
 
-                cellObject.fontFamily.roboto=true;
-                cellObject.fontFamily.arial=false; 
-                cellObject.fontFamily.rockwell=false; 
-                cellObject.fontFamily.monospace=false;
+
+//             if(styleName=="roboto")
+//             {
+//                 lastSelectedCell.target.style.fontFamily="Roboto,RobotoDraft,Helvetica,Arial,sans-serif";
+
+//                 cellObject.fontFamily.roboto=true;
+//                 cellObject.fontFamily.arial=false; 
+//                 cellObject.fontFamily.rockwell=false; 
+//                 cellObject.fontFamily.monospace=false;
                 
-                let option=document.querySelector("option[selected]")
-                option.removeAttribute("selected");
-                roboto.setAttribute("selected","");
-                return;
+//                 let option=document.querySelector("option[selected]")
+//                 option.removeAttribute("selected");
+//                 roboto.setAttribute("selected","");
+//                 return;
 
-            }else if(styleName=="arial")
-            {
-                lastSelectedCell.target.style.fontFamily="Georgia, 'Times New Roman', Times, serif";
+//             }else if(styleName=="arial")
+//             {
+//                 lastSelectedCell.target.style.fontFamily="Georgia, 'Times New Roman', Times, serif";
 
-                cellObject.fontFamily.arial=true; 
-                cellObject.fontFamily.roboto=false;
-                cellObject.fontFamily.rockwell=false; 
-                cellObject.fontFamily.monospace=false;
+//                 cellObject.fontFamily.arial=true; 
+//                 cellObject.fontFamily.roboto=false;
+//                 cellObject.fontFamily.rockwell=false; 
+//                 cellObject.fontFamily.monospace=false;
                 
-                let option=document.querySelector("option[selected]")
-                option.removeAttribute("selected");
-                arial.setAttribute("selected","");
-                return;
+//                 let option=document.querySelector("option[selected]")
+//                 option.removeAttribute("selected");
+//                 arial.setAttribute("selected","");
+//                 return;
                 
-            }else if(styleName=="rockwell")
-            {
-                lastSelectedCell.target.style.fontFamily="Rockwell";
+//             }else if(styleName=="rockwell")
+//             {
+//                 lastSelectedCell.target.style.fontFamily="Rockwell";
 
-                cellObject.fontFamily.rockwell=true; 
-                cellObject.fontFamily.arial=false; 
-                cellObject.fontFamily.roboto=false;
-                cellObject.fontFamily.monospace=false;
+//                 cellObject.fontFamily.rockwell=true; 
+//                 cellObject.fontFamily.arial=false; 
+//                 cellObject.fontFamily.roboto=false;
+//                 cellObject.fontFamily.monospace=false;
                 
-                let option=document.querySelector("option[selected]");
-                option.removeAttribute("selected");
-                rockwell.setAttribute("selected","");
+//                 let option=document.querySelector("option[selected]");
+//                 option.removeAttribute("selected");
+//                 rockwell.setAttribute("selected","");
 
-                return;
+//                 return;
                 
-            }else if(styleName=="monospace")
-            {
-                lastSelectedCell.target.style.fontFamily="monospace";
+//             }else if(styleName=="monospace")
+//             {
+//                 lastSelectedCell.target.style.fontFamily="monospace";
 
-                cellObject.fontFamily.monospace=true;
-                cellObject.fontFamily.arial=false; 
-                cellObject.fontFamily.roboto=false;
-                cellObject.fontFamily.rockwell=false; 
+//                 cellObject.fontFamily.monospace=true;
+//                 cellObject.fontFamily.arial=false; 
+//                 cellObject.fontFamily.roboto=false;
+//                 cellObject.fontFamily.rockwell=false; 
                 
-                let option=document.querySelector("option[selected]")
-                option.removeAttribute("selected");
-                monospace.setAttribute("selected","");
-                return;
-            }
+//                 let option=document.querySelector("option[selected]")
+//                 option.removeAttribute("selected");
+//                 monospace.setAttribute("selected","");
+//                 return;
+//             }
 
 
 
 
-            // if left is align then make right and center object false and also remove active class from them and vice versa
-            if(styleName=="leftAlign")
-            {
-                lastSelectedCell.target.style.textAlign="left";
+//             // if left is align then make right and center object false and also remove active class from them and vice versa
+//             if(styleName=="leftAlign")
+//             {
+//                 lastSelectedCell.target.style.textAlign="left";
 
-                cellObject.alignStyle.leftAlign=true;
-                cellObject.alignStyle.centerAlign=false;
-                cellObject.alignStyle.rightAlign=false;
+//                 cellObject.alignStyle.leftAlign=true;
+//                 cellObject.alignStyle.centerAlign=false;
+//                 cellObject.alignStyle.rightAlign=false;
 
-                leftAlignIcon.classList.add("active-font-style");
-                centerAlignIcon.classList.remove("active-font-style");
-                rightAlignIcon.classList.remove("active-font-style");
-                console.log(cellObject);
-                return;
+//                 leftAlignIcon.classList.add("active-font-style");
+//                 centerAlignIcon.classList.remove("active-font-style");
+//                 rightAlignIcon.classList.remove("active-font-style");
+//                 console.log(cellObject);
+//                 return;
 
-            }else if(styleName=="centerAlign")
-            {
-                lastSelectedCell.target.style.textAlign="center";
-                cellObject.alignStyle.centerAlign=true;
-                cellObject.alignStyle.leftAlign=false;
-                cellObject.alignStyle.rightAlign=false;
+//             }else if(styleName=="centerAlign")
+//             {
+//                 lastSelectedCell.target.style.textAlign="center";
+//                 cellObject.alignStyle.centerAlign=true;
+//                 cellObject.alignStyle.leftAlign=false;
+//                 cellObject.alignStyle.rightAlign=false;
 
-                centerAlignIcon.classList.add("active-font-style");
-                leftAlignIcon.classList.remove("active-font-style");
-                rightAlignIcon.classList.remove("active-font-style");
-                return;
+//                 centerAlignIcon.classList.add("active-font-style");
+//                 leftAlignIcon.classList.remove("active-font-style");
+//                 rightAlignIcon.classList.remove("active-font-style");
+//                 return;
                 
-            }else if(styleName=="rightAlign"){
-                lastSelectedCell.target.style.textAlign="right";
-                cellObject.alignStyle.rightAlign=true;
-                cellObject.alignStyle.leftAlign=false;
-                cellObject.alignStyle.centerAlign=false;
+//             }else if(styleName=="rightAlign"){
+//                 lastSelectedCell.target.style.textAlign="right";
+//                 cellObject.alignStyle.rightAlign=true;
+//                 cellObject.alignStyle.leftAlign=false;
+//                 cellObject.alignStyle.centerAlign=false;
 
-                rightAlignIcon.classList.add("active-font-style");
-                centerAlignIcon.classList.remove("active-font-style");
-                leftAlignIcon.classList.remove("active-font-style");
-                return;
-            }
+//                 rightAlignIcon.classList.add("active-font-style");
+//                 centerAlignIcon.classList.remove("active-font-style");
+//                 leftAlignIcon.classList.remove("active-font-style");
+//                 return;
+//             }
 
 
-                //------------Check for background color
-            if(styleName=="bgColor"){
-                cellObject.bgColor=iconElement.value;//Change in object value
-                lastSelectedCell.target.style.background=iconElement.value;//Change in ui
-                return;
-            }
+//                 //------------Check for background color
+//             if(styleName=="bgColor"){
+//                 cellObject.bgColor=iconElement.value;//Change in object value
+//                 lastSelectedCell.target.style.background=iconElement.value;//Change in ui
+//                 return;
+//             }
             
             
-            if(styleName=="textColor"){
-                cellObject.textColor=iconElement.value;//Change in object value
-                lastSelectedCell.target.style.color=iconElement.value;//Change in ui
-                return;
-            }
+//             if(styleName=="textColor"){
+//                 cellObject.textColor=iconElement.value;//Change in object value
+//                 lastSelectedCell.target.style.color=iconElement.value;//Change in ui
+//                 return;
+//             }
             
                     
 
             
-            //If syleName is bold ,It will check for cellObject.fontStyle.bold is true means you are click again
-            if(cellObject.fontStyle[styleName])
-            {
+//             //If syleName is bold ,It will check for cellObject.fontStyle.bold is true means you are click again
+//             if(cellObject.fontStyle[styleName])
+//             {
 
-                if(styleName=="bold")
-                {
-                    lastSelectedCell.target.style.fontWeight="normal";
-                }else if(styleName=="italic")
-                {
-                    lastSelectedCell.target.style.fontStyle="normal";
-                }else if(styleName=="underline"){
-                    lastSelectedCell.target.style.textDecoration="none";
-                }
+//                 if(styleName=="bold")
+//                 {
+//                     lastSelectedCell.target.style.fontWeight="normal";
+//                 }else if(styleName=="italic")
+//                 {
+//                     lastSelectedCell.target.style.fontStyle="normal";
+//                 }else if(styleName=="underline"){
+//                     lastSelectedCell.target.style.textDecoration="none";
+//                 }
 
-                iconElement.classList.remove("active-font-style");
+//                 iconElement.classList.remove("active-font-style");
 
-            }else{ 
-                //If bold is false it means Now I made is true
-                if(styleName=="bold")
-                {
-                    lastSelectedCell.target.style.fontWeight="bold";
-                    iconElement.classList.add("active-font-style");
+//             }else{ 
+//                 //If bold is false it means Now I made is true
+//                 if(styleName=="bold")
+//                 {
+//                     lastSelectedCell.target.style.fontWeight="bold";
+//                     iconElement.classList.add("active-font-style");
                     
-                }else if(styleName=="italic")
-                {
-                    lastSelectedCell.target.style.fontStyle="italic";
-                    iconElement.classList.add("active-font-style");
-                }else if(styleName=="underline"){
-                    lastSelectedCell.target.style.textDecoration="underline"; 
-                    iconElement.classList.add("active-font-style");  
-                }
+//                 }else if(styleName=="italic")
+//                 {
+//                     lastSelectedCell.target.style.fontStyle="italic";
+//                     iconElement.classList.add("active-font-style");
+//                 }else if(styleName=="underline"){
+//                     lastSelectedCell.target.style.textDecoration="underline"; 
+//                     iconElement.classList.add("active-font-style");  
+//                 }
 
 
-            }
-            //If bold is true before it make false
-            cellObject.fontStyle[styleName] =!cellObject.fontStyle[styleName]; 
+//             }
+//             //If bold is true before it make false
+//             cellObject.fontStyle[styleName] =!cellObject.fontStyle[styleName]; 
 
 
 
 
-        //Check for border style
-            if(cellObject.borderStyle[styleName])
-            {
+//         //Check for border style
+//             if(cellObject.borderStyle[styleName])
+//             {
 
-                if(styleName=="top")
-                {
-                    lastSelectedCell.target.style.borderTop=null;
-                }else if(styleName=="right")
-                {
-                    lastSelectedCell.target.style.borderRight=null;
-                }else if(styleName=="bottom"){
-                    lastSelectedCell.target.style.borderBottom=null;
-                }
-                else if(styleName=="left"){
-                    lastSelectedCell.target.style.borderLeft=null;
-                }
-                else if(styleName=="outer"){
-                    lastSelectedCell.target.style.border=null;
+//                 if(styleName=="top")
+//                 {
+//                     lastSelectedCell.target.style.borderTop=null;
+//                 }else if(styleName=="right")
+//                 {
+//                     lastSelectedCell.target.style.borderRight=null;
+//                 }else if(styleName=="bottom"){
+//                     lastSelectedCell.target.style.borderBottom=null;
+//                 }
+//                 else if(styleName=="left"){
+//                     lastSelectedCell.target.style.borderLeft=null;
+//                 }
+//                 else if(styleName=="outer"){
+//                     lastSelectedCell.target.style.border=null;
                 
-                }
+//                 }
                 
             
 
-                iconElement.classList.remove("active-font-style");
+//                 iconElement.classList.remove("active-font-style");
 
-            }else{ 
-                if(styleName=="top")
-                {
-                    lastSelectedCell.target.style.borderTop="1.5px solid black";
-                    // iconElement.classList.add("active-font-style");
+//             }else{ 
+//                 if(styleName=="top")
+//                 {
+//                     lastSelectedCell.target.style.borderTop="1.5px solid black";
 
-                }else if(styleName=="right")
-                {
-                    lastSelectedCell.target.style.borderRight="1.5px solid black";
-                    // iconElement.classList.add("active-font-style");
+//                 }else if(styleName=="right")
+//                 {
+//                     lastSelectedCell.target.style.borderRight="1.5px solid black";
 
-                }else if(styleName=="bottom"){
-                    lastSelectedCell.target.style.borderBottom="1.5px solid black";
-                    // iconElement.classList.add("active-font-style");
-                }
-                else if(styleName=="left"){
-                    lastSelectedCell.target.style.borderLeft="1.5px solid black";
-                    // iconElement.classList.add("active-font-style");
-                }
-                else if(styleName=="outer"){
-                    lastSelectedCell.target.style.border="1.5px solid black";
-                    // iconElement.classList.add("active-font-style");
-                } 
-                iconElement.classList.add("active-font-style");
-            }
-            cellObject.borderStyle[styleName] =!cellObject.borderStyle[styleName]; 
+//                 }else if(styleName=="bottom"){
+//                     lastSelectedCell.target.style.borderBottom="1.5px solid black";
+//                 }
+//                 else if(styleName=="left"){
+//                     lastSelectedCell.target.style.borderLeft="1.5px solid black";
+//                 }
+//                 else if(styleName=="outer"){
+//                     lastSelectedCell.target.style.border="1.5px solid black";
+//                 } 
+//                 iconElement.classList.add("active-font-style");
+//             }
+//             cellObject.borderStyle[styleName] =!cellObject.borderStyle[styleName]; 
 
 
 
-        }
-    }
+//         }
+//     }
 
-    function checkForIconStyle(cellObject)
-    {
+//     function checkForIconStyle(cellObject)
+//     {
 
-            /*----------Check for Icons-------------------*/
-            let boldIcon=document.querySelector(".bold");
-            let italicIcon=document.querySelector(".italic");
-            let underlineIcon=document.querySelector(".underline");
+//             /*----------Check for Icons-------------------*/
+//             let boldIcon=document.querySelector(".bold");
+//             let italicIcon=document.querySelector(".italic");
+//             let underlineIcon=document.querySelector(".underline");
             
-            if(cellObject.fontStyle.bold)//If bold is true
-            {
-                boldIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on ui
-            }else{
-                boldIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
+//             if(cellObject.fontStyle.bold)//If bold is true
+//             {
+//                 boldIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on ui
+//             }else{
+//                 boldIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
 
 
-            if(cellObject.fontStyle.italic)//If italic is true
-            {
-                italicIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
-            }else{
-                italicIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
-            }
+//             if(cellObject.fontStyle.italic)//If italic is true
+//             {
+//                 italicIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
+//             }else{
+//                 italicIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
+//             }
 
 
-            if(cellObject.fontStyle.underline)//If underline is true
-            {
-                underlineIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
-            }else{
-                underlineIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
-
-
-
+//             if(cellObject.fontStyle.underline)//If underline is true
+//             {
+//                 underlineIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+//             }else{
+//                 underlineIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
 
 
 
 
 
 
-            /*----------Check for Background Icon-------------------*/
 
 
-            let bgColorIcon=document.querySelector("input[id='bg-color']");
-            if(cellObject.bgColor!="#000000")//If color is not black
-            {
-                //we have to change bg-color it on ui
-                bgColorIcon.value=cellObject.bgColor; 
-            }else{
-                // remove bg-color on ui
-                bgColorIcon.value="#000000"; 
-            }
+
+//             /*----------Check for Background Icon-------------------*/
 
 
-            /*----------Check for Text color Icon-------------------*/
+//             let bgColorIcon=document.querySelector("input[id='bg-color']");
+//             if(cellObject.bgColor!="#000000")//If color is not black
+//             {
+//                 //we have to change bg-color it on ui
+//                 bgColorIcon.value=cellObject.bgColor; 
+//             }else{
+//                 // remove bg-color on ui
+//                 bgColorIcon.value="#000000"; 
+//             }
 
-            let textColorIcon=document.querySelector("input[id='text-color']");
-            if(cellObject.textColor!="#000000")//If color is not black
-            {
-                //we have to change text-color it on ui
-                textColorIcon.value=cellObject.textColor; 
-            }else{
-                //remove text-color on ui
-                textColorIcon.value="#000000"; 
-            }
+
+//             /*----------Check for Text color Icon-------------------*/
+
+//             let textColorIcon=document.querySelector("input[id='text-color']");
+//             if(cellObject.textColor!="#000000")//If color is not black
+//             {
+//                 //we have to change text-color it on ui
+//                 textColorIcon.value=cellObject.textColor; 
+//             }else{
+//                 //remove text-color on ui
+//                 textColorIcon.value="#000000"; 
+//             }
             
 
 
 
-            /*----------Check for Border Icon-------------------*/
+//             /*----------Check for Border Icon-------------------*/
 
-            let topBorderIcon=document.querySelector(".top-border");
-            if(cellObject.borderStyle.top)//If italic is true
-            {
-                topBorderIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
-            }else{
-                topBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
-            }
+//             let topBorderIcon=document.querySelector(".top-border");
+//             if(cellObject.borderStyle.top)//If italic is true
+//             {
+//                 topBorderIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
+//             }else{
+//                 topBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
+//             }
 
-            let rightBorderIcon=document.querySelector(".right-border");
-            if(cellObject.borderStyle.right)//If italic is true
-            {
-                rightBorderIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
-            }else{
-                rightBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
-            }
-
-
-            let bottomBorderIcon=document.querySelector(".bottom-border");
-            if(cellObject.borderStyle.bottom)//If underline is true
-            {
-                bottomBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
-            }else{
-                bottomBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
+//             let rightBorderIcon=document.querySelector(".right-border");
+//             if(cellObject.borderStyle.right)//If italic is true
+//             {
+//                 rightBorderIcon.classList.add("active-font-style"); //If true then we have to change bg-color it on Ui
+//             }else{
+//                 rightBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on Ui
+//             }
 
 
-            let leftBorderIcon=document.querySelector(".left-border");
-            if(cellObject.borderStyle.left)//If underline is true
-            {
-                leftBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
-            }else{
-                leftBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
-
-            let outerBorderIcon=document.querySelector(".outer-border");
-            if(cellObject.borderStyle.outer)//If underline is true
-            {
-                outerBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
-            }else{
-                outerBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
+//             let bottomBorderIcon=document.querySelector(".bottom-border");
+//             if(cellObject.borderStyle.bottom)//If underline is true
+//             {
+//                 bottomBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+//             }else{
+//                 bottomBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
 
 
+//             let leftBorderIcon=document.querySelector(".left-border");
+//             if(cellObject.borderStyle.left)//If underline is true
+//             {
+//                 leftBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+//             }else{
+//                 leftBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
+
+//             let outerBorderIcon=document.querySelector(".outer-border");
+//             if(cellObject.borderStyle.outer)//If underline is true
+//             {
+//                 outerBorderIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+//             }else{
+//                 outerBorderIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
 
 
 
-            /*----------Check for Align Icon-------------------*/  
 
 
-            let leftAlignIcon=document.querySelector(".left-side");
-            if(cellObject.alignStyle.leftAlign)//If underline is true
-            {
-                leftAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
-            }else{
-                leftAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
+//             /*----------Check for Align Icon-------------------*/  
 
 
-            let centerAlignIcon=document.querySelector(".center-side");
-            if(cellObject.alignStyle.centerAlign)//If underline is true
-            {
-                centerAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
-            }else{
-                centerAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
+//             let leftAlignIcon=document.querySelector(".left-side");
+//             if(cellObject.alignStyle.leftAlign)//If underline is true
+//             {
+//                 leftAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+//             }else{
+//                 leftAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
 
 
-            let rightAlignIcon=document.querySelector(".right-side");
-            if(cellObject.alignStyle.rightAlign)//If underline is true
-            {
-                rightAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
-            }else{
-                rightAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
-            }
+//             let centerAlignIcon=document.querySelector(".center-side");
+//             if(cellObject.alignStyle.centerAlign)//If underline is true
+//             {
+//                 centerAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+//             }else{
+//                 centerAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
 
 
-
-            /*----------Check for Font Family Icon-------------------*/  
-
-
-            let roboto=document.querySelector("option[value='roboto']");
-            if(cellObject.fontFamily.roboto)
-            {
-                roboto.setAttribute("selected","");
-                select.selectedIndex = 0;
-            }else{
-                roboto.removeAttribute("selected");   
-            }
-
-            let arial=document.querySelector("option[value='arial']");
-            if(cellObject.fontFamily.arial)
-            {
-                arial.setAttribute("selected","");
-                select.selectedIndex = 1;
-            }else{
-                arial.removeAttribute("selected");   
-            }
-
-            let rockwell=document.querySelector("option[value='rockwell']");
-            if(cellObject.fontFamily.rockwell)
-            {
-                rockwell.setAttribute("selected","");
-                select.selectedIndex = 2;
-            }else{
-                rockwell.removeAttribute("selected");   
-            }
-
-            let monospace=document.querySelector("option[value='monospace']");
-            if(cellObject.fontFamily.monospace)
-            {
-                monospace.setAttribute("selected","");
-                select.selectedIndex = 3;
-                console.log("done");
-            }else{
-                monospace.removeAttribute("selected");   
-            }
+//             let rightAlignIcon=document.querySelector(".right-side");
+//             if(cellObject.alignStyle.rightAlign)//If underline is true
+//             {
+//                 rightAlignIcon.classList.add("active-font-style"); //If underline is true then we have to change bg-color it on ui
+//             }else{
+//                 rightAlignIcon.classList.remove("active-font-style");//If false then remove bg-color on ui
+//             }
 
 
 
-} 
+//             /*----------Check for Font Family Icon-------------------*/  
+
+
+//             let roboto=document.querySelector("option[value='roboto']");
+//             if(cellObject.fontFamily.roboto)
+//             {
+//                 roboto.setAttribute("selected","");
+//                 select.selectedIndex = 0;
+//             }else{
+//                 roboto.removeAttribute("selected");   
+//             }
+
+//             let arial=document.querySelector("option[value='arial']");
+//             if(cellObject.fontFamily.arial)
+//             {
+//                 arial.setAttribute("selected","");
+//                 select.selectedIndex = 1;
+//             }else{
+//                 arial.removeAttribute("selected");   
+//             }
+
+//             let rockwell=document.querySelector("option[value='rockwell']");
+//             if(cellObject.fontFamily.rockwell)
+//             {
+//                 rockwell.setAttribute("selected","");
+//                 select.selectedIndex = 2;
+//             }else{
+//                 rockwell.removeAttribute("selected");   
+//             }
+
+//             let monospace=document.querySelector("option[value='monospace']");
+//             if(cellObject.fontFamily.monospace)
+//             {
+//                 monospace.setAttribute("selected","");
+//                 select.selectedIndex = 3;
+//                 console.log("done");
+//             }else{
+//                 monospace.removeAttribute("selected");   
+//             }
+
+
+
+// } 

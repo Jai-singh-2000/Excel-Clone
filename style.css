@@ -285,44 +285,45 @@ input[type="color"]
 
 
 
-/* Scrollbar design section */
+    /* Scrollbar design section */
 
-.cell-container::-webkit-scrollbar-track
-{
-	border-radius: 10px;
-	background-color: #F5F5F5;
-}
+    .cell-container::-webkit-scrollbar-track
+    {
+        border-radius: 10px;
+        background-color: #F5F5F5;
+    }
 
-.cell-container::-webkit-scrollbar
-{
-    height: 11px;
-	width: 11px;
-	background-color: #F5F5F5;
-}
+    .cell-container::-webkit-scrollbar
+    {
+        height: 11px;
+        width: 11px;
+        background-color: #F5F5F5;
+    }
 
-.cell-container::-webkit-scrollbar-thumb
-{
-	border-radius: 2px;
-	background-color: rgb(162, 162, 162);
-}
-
-
-.active-sheet{
-    background-color: rgb(255, 255, 255);
-}
+    .cell-container::-webkit-scrollbar-thumb
+    {
+        border-radius: 2px;
+        background-color: rgb(162, 162, 162);
+    }
 
 
+    /* All active css */
+    .active-sheet{
+        background-color: rgb(255, 255, 255);
+    }
 
-.active-cell{
-    border:2.2px solid rgb(0, 180, 0);
-}
 
-.active-address{
-    background-color: rgb(225, 225, 222);
-}
 
-.active-font-style{
-    background-color: rgb(203, 204, 204);
-    border-radius: 4px;
-    opacity: 0.8;
-}
+    .active-cell{
+        border:2.2px solid rgb(0, 180, 0);
+    }
+
+    .active-address{
+        background-color: rgb(225, 225, 222);
+    }
+
+    .active-font-style{
+        background-color: rgb(203, 204, 204);
+        border-radius: 4px;
+        opacity: 0.8;
+    }
