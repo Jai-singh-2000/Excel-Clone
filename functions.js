@@ -1,5 +1,5 @@
+//Address = A1 J3 T12 (Means address name)
 function getRowIdColIdFromAddress(address){
-    //address = A1 J3 T12 (Means address name)
     let colId = address.charCodeAt(0)-65;
     let rowId = Number(address.substring(1))-1;
     return {
@@ -22,7 +22,7 @@ function getRowAndColId(e)
 
 
 //Formula C1 = (A1 + B2 - 3 ) Means A1 and B2 are 'parents' of C1
-    //C1 is selfCellObject in which forumla is applied means 'child'
+/*-------- C1 is selfCellObject in which forumla is applied means 'child'------------------*/
 function solveFormula(formula,selfCellObject)
 {
         let formulaArr=formula.split(" ");//Split formula on the basis of space and make formulaArray
@@ -147,6 +147,7 @@ function clearUi()
         {
             let cell=document.querySelector(`div[rowid="${i}"][colid="${j}"]`);
             cell.innerHTML="";
+            cell.style.background="#ffffff";
         }
     }
 }
@@ -159,8 +160,9 @@ function setUiValue()
         let {rowId,colId}=visitedCells[i];
         let cellObject=db[rowId][colId];
         let cell=document.querySelector(`div[rowid="${rowId}"][colid="${colId}"]`);
-        cell.innerHTML=cellObject.value; 
-
+        cell.innerHTML=cellObject.value;
+        cell.style.background=cellObject.bgColor;
+    
     }
 }
 
@@ -279,14 +281,14 @@ function setFontStyle(styleName,iconElement)
         }
 
 
-            //------------Check for background color
+        //------------Check for background color
         if(styleName=="bgColor"){
             cellObject.bgColor=iconElement.value;//Change in object value
             lastSelectedCell.target.style.background=iconElement.value;//Change in ui
             return;
         }
         
-        
+        //------------Check for Text color
         if(styleName=="textColor"){
             cellObject.textColor=iconElement.value;//Change in object value
             lastSelectedCell.target.style.color=iconElement.value;//Change in ui
@@ -336,7 +338,7 @@ function setFontStyle(styleName,iconElement)
 
 
 
-    //Check for border style
+        //Check for border style
         if(cellObject.borderStyle[styleName])
         {
 
@@ -431,13 +433,13 @@ function checkForIconStyle(cellObject)
 
 
         let bgColorIcon=document.querySelector("input[id='bg-color']");
-        if(cellObject.bgColor!="#000000")//If color is not black
+        if(cellObject.bgColor!="#ffffff")//If color is not white
         {
             //we have to change bg-color it on ui
             bgColorIcon.value=cellObject.bgColor; 
         }else{
             // remove bg-color on ui
-            bgColorIcon.value="#000000"; 
+            bgColorIcon.value="#ffffff"; 
         }
 
 
